@@ -1,27 +1,27 @@
 <!DOCTYPE html>
-<html lang="en"><head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wordie</title>
 </head>
 <body>
-    <p id="secret">&nbsp;</p>
-    
-    <h2>The object of this game is to guess a secret word. The secret word has five letters that don't repeat.
-        Try to guess it by entering a similar word. With each word you guess you will be
-        given a hint in the following format: </h2>
+    <p id="secret">&nbsp</p>
+    <center><h2>The object of this game is to guess a secret word. The secret word has five letters that don't repeat.</h2>
+        <h2> Try to guess it by entering a similar word. With each word you guess you will be
+        given a hint in the following format:</h2> 
         <h3><b>(common letters in the same place) : (common letters in different places)</b></h3>
         <h3>Here's an example: if the secret word is horse and you guess crust, the hint is (s):(r) .</h3>
-        <h3>Type in your guess and press the button.</h3>
-    <p id="attempts">Number of attempts:</p> 
-    <h3 id="success"></h3>
+        <h3>Type in your guess and press the button.</h3></center>
+    <center><p id="attempts">Number of attempts:</p> 
+        <h3 id="success"></h3>
+    
     <p id="poop"></p>
     
 
     <input id="guess" type="text">
-    <input type="button" value="guess" onclick="doResult()">
+    <input type="button" value="guess" onClick="doResult()"/></center>
  
     <script type="text/javascript">
         attempts=0
@@ -36,35 +36,59 @@
       //  document.getElementById("guess").value="";
         var result = "You guessed it!";
         var warning = "Your guess must be a 5-letter word with no repeating letters.";
-        tries =""
+        tries ="";
         var samesame="";
         var samelet="";
         var hint="";
-    
-      //  document.getElementById("secret").innerHTML= secretWord;
+      
+        document.getElementById("secret").innerHTML= secretWord;
         function doResult() {
           //  document.getElementById("guess").select();
-            document.getElementById("poop").innerHTML= "";//display entries
-            samesame=""; samelet=""
-            var guess = document.getElementById("guess").value.toLowerCase();
+            document.getElementById("poop").innerHTML= "";//clear entries
             
-            if (guess.length != 5) {
-            document.getElementById("poop").innerHTML= warning;//display entries
+            samesame=""; samelet=""; //declare variables
+            var guess = document.getElementById("guess").value.toLowerCase();
+                                             //check for 5 letters
+           
+            if (guess.length != 5) {                                                 //check for 5 letters
+            document.getElementById("poop").innerHTML= warning;//display warning
+            document.getElementById("guess").value=""; //clear box
+            return; }
+            else if (guess.charAt(0) == guess.charAt(1) || guess.charAt(0) == guess.charAt(2) || 
+            guess.charAt(0)===guess.charAt(3) || guess.charAt(0)===guess.charAt(4) || 
+            guess.charAt(1)===guess.charAt(2) || guess.charAt(1)===guess.charAt(3) || 
+            guess.charAt(1)===guess.charAt(4) || guess.charAt(2)===guess.charAt(3) ||
+            guess.charAt(2)===guess.charAt(4) || guess.charAt(3)===guess.charAt(4)) {
+            document.getElementById("poop").innerHTML= warning;//display warning
             document.getElementById("guess").value="";
             return;
-            //clear box
-            } for (i=0; i<5; i++) {
+             }
+            
+           for (i=0; i<5; i++) {
                 if (guess.charAt(i)==secretWord.charAt(i)) {
                     samesame+=guess.charAt(i);
-                } else if (secretWord.includes(guess.charAt(i))) {
+              } else if (secretWord.includes(guess.charAt(i))) {
                     samelet+=guess.charAt(i);
-                }
-            }
+                    }
+            
+            
+      //      document.getElementById("poop").innerHTML= warning;//display entries
+      //      document.getElementById("guess").value="";
+     //       return;   
+            }     
+            
             hint="("+samesame+")"+":"+"("+ samelet+")";
             if (guess == secretWord) {//check for matching word
             document.getElementById("success").innerHTML= guess+"! "+result;//display message
             document.getElementById("guess").value="";//clear box
+            document.getElementById("success").value="";//clear box
             
+            attempts = -1;
+            guess = ""; 
+            samesame = ""; 
+            samelet = ""; 
+            hint = ""; 
+            tries = "";
              }
             
             else {
@@ -72,18 +96,13 @@
             document.getElementById("success").innerHTML= tries+=guess+"-- " + hint+";  ";//display entries
             document.getElementById("guess").value="";//clear box
               }            
-        attempts +=1;
-        document.getElementById("attempts").innerHTML= "Number of attempts: " + attempts;//display # of tries
+         attempts +=1;
+         document.getElementById("attempts").innerHTML= "Number of attempts: " + attempts;//display # of tries
         
-        return; 
+         return; 
 
             }
 
-    
-         
-        
-
-        
-    </script>
-
-</body></html>
+     </script>
+</body>
+</html>
