@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>fwordie</title>
+</head>
+<body>
+<p id="secret">&nbsp</p>
+<center><h2 id="display1">Le but de ce jeu est de deviner un mot secret. Le mot secret a cinq lettres non répétitives.</h2>
+<h2 id="display2"> Essayez de le deviner en entrant un mot similaire. Avec chaque mot que vous devinez, vous recevrez un indice dans le format suivant :</h2> 
+<h3 id="display3"><b>(lettres communes au même endroit) : (lettres communes à différents endroits)</b></h3>
+<h3 id="display4">Voici un exemple : si le mot secret est 'chose' et que vous devinez 'boire', l'indice est (_ _ _ _ e):(o).</h3>
+<h3 id="display5">Tapez votre estimation et appuyez sur le bouton.</h3></center>
+<center><p id="attempts">Nombre de tentatives:</p> 
+<h2 id="success"></h2>
+<p id="poop"></p>
+<center><input id="guess" type="text"/> 
+<input type="button" value="bouton" onClick="doResult()"/>
+<input type="button" value="redémarrer" onClick="window.location.reload(true)"/>
+
+<p>&nbsp</p>
+<script type="text/javascript">
+function getSecretWord()  {
+const secret = ['franc', 'vague', 'dater', 'alors', 'plume', 'sourd', 'prévu', 'vouer', 'virus', 'folie',
+ 'plaie', 'stock', 'clore', 'tapis', 'ouais', 'tenir', 'foule', 'hâter', 'taxer', 'faire',
+ 'glace', 'toile', 'crâne', 'pente', 'micro', 'piste', 'béton', 'poire', 'impôt', 'golfe',
+ 'diner', 'blond', 'boire', 'crise', 'solde', 'calme', 'final', 'chien', 'paire', 'jaune',
+ 'champ', 'plein', 'chaud', 'local', 'dépôt', 'lundi', 'radio', 'ombre', 'sujet', 'vôtre',
+ 'coupe', 'tiens', 'soeur', 'moyen', 'cadre', 'éclat', 'volet', 'crime', 'drôle', 'payer',
+ 'match', 'mieux', 'chose', 'porte', 'loyer', 'notre', 'viser', 'repli', 'plomb', 'océan'];
+var randomNumber = Math.floor((Math.random() * secret.length) + 1); //picks a random number between 1 and the number of secret words in library   
+var randWord = secret[randomNumber];
+return randWord;
+}
+let secretWord=getSecretWord();
+//document.getElementById("secret").innerHTML= secretWord; //put secret word on screen
+var result = "You guessed it in ";
+var warning = "Your guess must be a 5-letter word with no repeating letters.";
+var tries ="";
+var samesame="";
+var samelet="";
+var hint=""; 
+var attempts=0; 
+function doResult() {
+    //    attempts=0;
+    //  document.getElementById("guess").value="";
+ document.getElementById("poop").innerHTML= "";//clear entries
+ samesame=""; samelet=""; //declare variables
+ var guess = document.getElementById("guess").value.toLowerCase();
+ //check for 5 letters
+if (guess.length != 5) {                                                 //check for 5 letters
+document.getElementById("poop").innerHTML= warning;//display warning
+document.getElementById("guess").value=""; //clear box
+return; }
+else if (guess.charAt(0) == guess.charAt(1) || guess.charAt(0) == guess.charAt(2) || 
+guess.charAt(0)===guess.charAt(3) || guess.charAt(0)===guess.charAt(4) || 
+guess.charAt(1)===guess.charAt(2) || guess.charAt(1)===guess.charAt(3) || 
+guess.charAt(1)===guess.charAt(4) || guess.charAt(2)===guess.charAt(3) ||
+guess.charAt(2)===guess.charAt(4) || guess.charAt(3)===guess.charAt(4)) {
+document.getElementById("poop").innerHTML= warning;//display warning
+document.getElementById("guess").value="";
+return;
+ }
+for (i=0; i<5; i++) {
+if (guess.charAt(i)==secretWord.charAt(i)) {
+samesame+=guess.charAt(i)+" ";
+ } //try this next line to display 5 letter clue; also omitted else from line 68
+else {samesame+= " _ ";
+     if (secretWord.includes(guess.charAt(i))) 
+samelet+=guess.charAt(i)+" ";
+ }
+ //      document.getElementById("poop").innerHTML= warning;//display entries
+ //      document.getElementById("guess").value="";
+//       return;   
+ }     
+hint="( "+samesame+")"+":"+"( "+ samelet+")";
+if (guess == secretWord) {//check for matching word
+document.getElementById("success").innerHTML= guess+"! "+result+(attempts+1)+" tries! Play again!";//display message
+document.getElementById("guess").value="";//clear box
+document.getElementById("success").value="";//clear box
+secretWord=getSecretWord();
+ //   document.getElementById("secret").innerHTML= secretWord;
+attempts = -1;
+guess = ""; 
+samesame = ""; 
+samelet = ""; 
+hint = ""; 
+tries = ""; 
+ }
+else {
+//document.getElementById("success").innerHTML= tries+=guess+"-- " + hint; //display entries
+document.getElementById("success").innerHTML= tries += guess+"-- " + hint+ "<br>"; //display entries
+document.getElementById("guess").value="";//clear box
+document.getElementById("display1").innerHTML= "&nbsp";  //display progress
+document.getElementById("display2").innerHTML= "&nbsp";  //display progress
+document.getElementById("display3").innerHTML= "&nbsp";  //display progress
+document.getElementById("display4").innerHTML= "&nbsp";  //display progress
+
+ } 
+attempts +=1;
+document.getElementById("attempts").innerHTML= "Number of attempts: " + attempts;//display # of tries
+return; 
+ }   
+</script>
+</body>
+</html>
